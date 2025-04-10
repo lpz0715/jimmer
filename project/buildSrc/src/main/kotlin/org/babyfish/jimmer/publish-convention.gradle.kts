@@ -6,16 +6,8 @@ plugins {
 publishing {
     repositories {
         maven {
-            credentials {
-                username = findProperty("NEXUS_USERNAME") as String?
-                password = findProperty("NEXUS_PASSWORD") as String?
-            }
-            name = "MavenCentral"
-            url = if (project.version.toString().endsWith("-SNAPSHOT")) {
-                uri("https://oss.sonatype.org/content/repositories/snapshots")
-            } else {
-                uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            }
+            name = "LocalMaven"
+            url = uri("file:///E:/maven/mavenRepository")
         }
     }
     publications {
@@ -53,6 +45,7 @@ publishing {
     }
 }
 
-signing {
-    sign(publishing.publications["mavenJava"])
-}
+//signing {
+//    // 仅当发布到MavenCentral时签名，本地发布跳过
+//    setRequired { gradle.taskGraph.hasTask("publishMavenJavaPublicationToMavenCentralRepository") }
+//}

@@ -791,7 +791,7 @@ public class DtoGenerator {
         }
         FieldSpec.Builder builder = FieldSpec
                 .builder(typeName, prop.getName())
-                .addModifiers(Modifier.PRIVATE);
+                .addModifiers(Modifier.PUBLIC);
         String doc = doc(prop, true);
         if (doc != null) {
             builder.addJavadoc(doc);
@@ -832,7 +832,7 @@ public class DtoGenerator {
         }
         FieldSpec.Builder builder = FieldSpec
                 .builder(typeName, prop.getAlias())
-                .addModifiers(Modifier.PRIVATE);
+                .addModifiers(Modifier.PUBLIC);
         if (prop.getDefaultValueText() != null) {
             builder.initializer(prop.getDefaultValueText());
         }
@@ -1378,7 +1378,7 @@ public class DtoGenerator {
         TypeName dtoPropTypeName = getPropTypeName(prop);
         MethodSpec.Builder builder = MethodSpec
                 .methodBuilder(StringUtil.identifier("__convert", prop.getName()))
-                .addModifiers(Modifier.PRIVATE)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(dtoPropTypeName, "value")
                 .returns(baseTypeName);
         CodeBlock.Builder cb = CodeBlock.builder();
