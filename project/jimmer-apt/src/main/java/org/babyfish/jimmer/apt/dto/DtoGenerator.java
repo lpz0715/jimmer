@@ -141,12 +141,7 @@ public class DtoGenerator {
             doc = baseDocComment();
         }
         if (doc != null && !doc.isEmpty()) {
-            typeBuilder.addAnnotation(
-                    AnnotationSpec
-                            .builder(org.babyfish.jimmer.apt.immutable.generator.Constants.DESCRIPTION_CLASS_NAME)
-                            .addMember("value", "$S", doc)
-                            .build()
-            );
+            typeBuilder.addJavadoc(doc);
         }
         for (AnnotationMirror annotationMirror : dtoType.getBaseType().getTypeElement().getAnnotationMirrors()) {
             if (isCopyableAnnotation(annotationMirror, dtoType.getAnnotations(), null)) {
@@ -156,6 +151,9 @@ public class DtoGenerator {
         for (Anno anno : dtoType.getAnnotations()) {
             if (!anno.getQualifiedName().equals(KOTLIN_DTO_TYPE_NAME)) {
                 typeBuilder.addAnnotation(annotationOf(anno));
+            }
+            if(anno.getQualifiedName().equals("org.babyfish.jimmer.client.Description")){
+                typeBuilder.addJavadoc(anno.getValueMap().get("value").toString());
             }
         }
         if (innerClassName != null) {
@@ -310,7 +308,15 @@ public class DtoGenerator {
                         ),
                         "METADATA"
                 )
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                .addAnnotation(
+                        AnnotationSpec
+                                .builder( ClassName.get(
+                                        "com.baidu.bjf.remoting.protobuf.annotation",
+                                        "Ignore"
+                                ))
+                                .build()
+                );
         CodeBlock.Builder cb = CodeBlock
                 .builder()
                 .indent()
