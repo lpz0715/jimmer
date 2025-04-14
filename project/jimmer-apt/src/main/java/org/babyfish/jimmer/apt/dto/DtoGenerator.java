@@ -605,6 +605,14 @@ public class DtoGenerator {
                 Modifier.STATIC,
                 Modifier.FINAL
         );
+
+        builder.addAnnotation(AnnotationSpec
+                .builder(ClassName.get(
+                        "com.baidu.bjf.remoting.protobuf.annotation",
+                        "Ignore"
+                ))
+                .build()
+        );
         CodeBlock.Builder cb = CodeBlock.builder();
         cb.add("new $T(", org.babyfish.jimmer.apt.immutable.generator.Constants.DTO_PROP_ACCESSOR_CLASS_NAME);
         cb.indent();
